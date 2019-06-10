@@ -1,14 +1,15 @@
 import { ActionTypes } from 'Actions';
 import isEmpty from 'is-empty';
+import { Reducer } from 'redux';
+import { authAction, authState } from '.';
 
-const initialState = {
+const initialState = <authState>{
     isAuthenticated: false,
     user: {},
     loading: false,
 };
-
-export default function(state = initialState, action) {
-    switch (action.type) {
+const authReducer: Reducer<authState> = (state = initialState, action) => {
+    switch ((action as authAction).type) {
         case ActionTypes.SET_CURRENT_USER:
             return {
                 ...state,
@@ -18,4 +19,6 @@ export default function(state = initialState, action) {
         default:
             return state;
     }
-}
+};
+
+export default authReducer;

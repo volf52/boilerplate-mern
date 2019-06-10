@@ -1,6 +1,1 @@
-declare module App {
-    interface Item {
-        name: string;
-        value: number;
-    }
-}
+declare module 'SharedTypes' {}
