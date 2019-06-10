@@ -22,7 +22,8 @@
         "typeRoots": ["node_modules/@types"],
         "paths": {
             "*": ["node_modules/@types", "./src/types/*"]
-        }
+        },
+        "experimentalDecorators": true
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "public"]

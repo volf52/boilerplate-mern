@@ -1,12 +1,42 @@
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { registerUser } from '../../actions/authActions';
 import classnames from 'classnames';
+import * as t from 'io-ts';
+import { props } from 'prop-types-ts';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link, withRouter, RouteProps } from 'react-router-dom';
+import { RegisterComponentState } from '..';
+import { registerUser } from '../../actions/authActions';
+import { authObject, authState, errorState, rootState } from '../../reducers';
 
-class Register extends Component {
-    constructor(props) {
+const RegisterPropTypes = t.interface(
+    {
+        registerUser: t.Function,
+        auth: authObject,
+        errors: t.object,
+        history: t.array(t.string),
+    },
+    'RegisterProps'
+);
+
+interface StateProps {
+    auth: authState;
+    errors: errorState;
+}
+interface OwnProps {
+    history: Array<string>;
+}
+interface DispachProps {
+    registerUser: typeof registerUser;
+}
+
+type RegisterProps = t.TypeOf<typeof RegisterPropTypes>;
+
+@props(RegisterPropTypes)
+class Register extends Component<
+    RegisterProps & RouteProps,
+    RegisterComponentState
+> {
+    constructor(props: RegisterProps) {
         super(props);
         this.state = {
             name: '',
@@ -17,7 +47,7 @@ class Register extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: RegisterProps) {
         if (nextProps.errors) {
             this.setState({
                 errors: nextProps.errors,
@@ -31,11 +61,11 @@ class Register extends Component {
         }
     }
 
-    onChange = e => {
-        this.setState({ [e.target.id]: e.target.value });
+    onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({ [e.target.id]: e.target.value, ...this.state });
     };
 
-    onSubmit = e => {
+    onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { name, email, password, password2 } = this.state;
         const newUser = {
@@ -76,7 +106,6 @@ class Register extends Component {
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.name}
-                                    error={errors.name}
                                     id='name'
                                     type='text'
                                     className={classnames('', {
@@ -90,7 +119,6 @@ class Register extends Component {
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.email}
-                                    error={errors.email}
                                     id='email'
                                     type='email'
                                     className={classnames('', {
@@ -104,7 +132,6 @@ class Register extends Component {
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.password}
-                                    error={errors.password}
                                     id='password'
                                     type='password'
                                     className={classnames('', {
@@ -120,7 +147,6 @@ class Register extends Component {
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.password2}
-                                    error={errors.password2}
                                     id='password2'
                                     type='password'
                                     className={classnames('', {
@@ -157,18 +183,21 @@ class Register extends Component {
     }
 }
 
-Register.propTypes = {
-    registerUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state: rootState): StateProps => ({
     auth: state.auth,
     errors: state.errors,
 });
 
+const mapDispatchToProps = (): DispachProps => ({
+    registerUser,
+});
+
+// export default withRouter(connect(
+//     mapStateToProps,
+//     mapDispatchToProps
+// )(Register) as React.ComponentType<any>);
+
 export default connect(
     mapStateToProps,
-    { registerUser }
-)(withRouter(Register));
+    mapDispatchToProps
+)(withRouter(Register as React.ComponentType<any>));

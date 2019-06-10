@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
+import PropTypes, { Validator } from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { PrivateRouteProps } from '.';
+import { authState, rootState } from '../reducers';
 
-const PrivateRoute = (props: PrivateRouteProps) => {
+const PrivateRoute: React.FC<PrivateRouteProps> = props => {
     const { component: Component, auth, ...rest } = props;
     return (
         <Route
@@ -21,10 +22,10 @@ const PrivateRoute = (props: PrivateRouteProps) => {
 };
 
 PrivateRoute.propTypes = {
-    auth: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired as Validator<authState>,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: rootState) => ({
     auth: state.auth,
 });
 

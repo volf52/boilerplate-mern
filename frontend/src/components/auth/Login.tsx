@@ -1,11 +1,40 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { loginUser } from '../../actions/authActions';
 import classnames from 'classnames';
-class Login extends Component {
-    constructor(props) {
+import * as t from 'io-ts';
+import { props } from 'prop-types-ts';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { LoginComponentState } from '..';
+import { LoginData } from '../../actions';
+import { loginUser } from '../../actions/authActions';
+import { authObject, authState, errorState, rootState } from '../../reducers';
+
+const LoginPropTypes = t.interface(
+    {
+        auth: authObject,
+        errors: t.object,
+        loginUser: t.Function,
+        history: t.array(t.string),
+    },
+    'LoginProps'
+);
+interface StateProps {
+    auth: authState;
+    errors: errorState;
+}
+interface OwnProps {
+    history: Array<string>;
+}
+interface DispachProps {
+    loginUser: typeof loginUser;
+}
+
+// type LoginProps = StateProps & DispachProps & OwnProps;
+type LoginProps = t.TypeOf<typeof LoginPropTypes>;
+
+@props(LoginPropTypes)
+class Login extends Component<LoginProps, LoginComponentState> {
+    constructor(props: LoginProps) {
         super(props);
         this.state = {
             email: '',
@@ -14,7 +43,7 @@ class Login extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: LoginProps) {
         if (nextProps.auth.isAuthenticated) {
             this.props.history.push('/dashboard');
         }
@@ -32,23 +61,23 @@ class Login extends Component {
         }
     }
 
-    onChange = e => {
-        this.setState({ [e.target.id]: e.target.value });
+    onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({ [e.target.id]: e.target.value, ...this.state });
     };
 
-    onSubmit = e => {
+    onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const { email, password } = this.state;
         const userData = {
             email,
             password,
-        };
+        } as LoginData;
 
         this.props.loginUser(userData);
     };
 
-    render() {
+    render(): JSX.Element {
         const { errors } = this.state;
         return (
             <div className='container'>
@@ -76,7 +105,6 @@ class Login extends Component {
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.email}
-                                    error={errors.email}
                                     id='email'
                                     type='email'
                                     className={classnames('', {
@@ -95,7 +123,6 @@ class Login extends Component {
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.password}
-                                    error={errors.password}
                                     id='password'
                                     type='password'
                                     className={classnames('', {
@@ -133,18 +160,16 @@ class Login extends Component {
     }
 }
 
-Login.propTypes = {
-    loginUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-};
-
-const mapSateToProps = state => ({
+const mapSateToProps = (state: rootState): StateProps => ({
     auth: state.auth,
     errors: state.errors,
 });
 
+const mapDispatchToProps = (): DispachProps => ({
+    loginUser,
+});
+
 export default connect(
     mapSateToProps,
-    { loginUser }
+    mapDispatchToProps
 )(Login);

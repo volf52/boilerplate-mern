@@ -1,13 +1,16 @@
+import * as t from 'io-ts';
 import { combineReducers, ReducersMapObject } from 'redux';
+import { supportedAction } from '../actions';
 import authReducer from './authReducer';
 import errorReducer from './errorReducer';
-import { supportedAction } from '../actions';
+
+export const authObject = t.type({
+    isAuthenticated: t.boolean,
+    user: t.object,
+    loading: t.boolean,
+});
+export type authState = t.TypeOf<typeof authObject>;
 export interface errorState {}
-export interface authState {
-    isAuthenticated: boolean;
-    user: {};
-    loading: boolean;
-}
 
 export interface rootState {
     auth: authState;

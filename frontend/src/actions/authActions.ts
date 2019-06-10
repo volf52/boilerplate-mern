@@ -1,16 +1,15 @@
 import axios from 'axios';
-import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
-
-import {
-    RegisterData,
-    ActionTypes,
-    LoginData,
-    loginAction,
-    registerAction,
-    errorAction,
-} from '.';
 import { Dispatch } from 'redux';
+import {
+    ActionTypes,
+    errorAction,
+    loginAction,
+    LoginData,
+    registerAction,
+    RegisterData,
+} from '.';
+import setAuthToken from '../utils/setAuthToken';
 
 export const registerUser = (
     userData: RegisterData,
@@ -26,7 +25,6 @@ export const registerUser = (
             })
         );
 };
-
 export const loginUser = (userData: LoginData) => (
     dispatch: Dispatch<loginAction | errorAction>
 ) => {
