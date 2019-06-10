@@ -1,6 +1,6 @@
-import { ActionTypes } from 'Actions';
 import { Reducer } from 'redux';
-import { errorAction, errorState } from '.';
+import { errorState } from '.';
+import { ActionTypes, errorAction } from '../actions';
 
 const initialState = <errorState>{};
 

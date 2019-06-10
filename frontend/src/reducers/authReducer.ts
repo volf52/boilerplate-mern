@@ -1,7 +1,7 @@
-import { ActionTypes } from 'Actions';
 import isEmpty from 'is-empty';
 import { Reducer } from 'redux';
-import { authAction, authState } from '.';
+import { authState } from '.';
+import { ActionTypes, authAction } from '../actions';
 
 const initialState = <authState>{
     isAuthenticated: false,
