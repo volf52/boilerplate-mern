@@ -1,10 +1,23 @@
+import * as t from 'io-ts';
+import { props } from 'prop-types-ts';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { authObject, rootState } from '../../reducers';
 
-class Landing extends Component {
-    componentWillReceiveProps(nextProps) {
+const LandingPropTypes = t.interface(
+    {
+        auth: authObject,
+        history: t.array(t.string),
+    },
+    'LandingProps'
+);
+
+type LandingProps = t.TypeOf<typeof LandingPropTypes>;
+
+@props(LandingPropTypes)
+class Landing extends Component<LandingProps> {
+    componentWillReceiveProps(nextProps: LandingProps) {
         if (nextProps.auth.isAuthenticated) {
             this.props.history.push('/dashboard');
         }
@@ -58,11 +71,7 @@ class Landing extends Component {
     }
 }
 
-Landing.propTypes = {
-    auth: PropTypes.object.isRequired,
-};
-
-const mapStatesToProps = state => ({
+const mapStatesToProps = (state: rootState) => ({
     auth: state.auth,
 });
 

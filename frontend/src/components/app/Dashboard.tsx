@@ -1,14 +1,20 @@
+import * as t from 'io-ts';
+import { props } from 'prop-types-ts';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser } from '../../actions/authActions';
+import { authObject, rootState } from '../../reducers';
 
-class Dashboard extends Component {
-    onLogoutClick = e => {
-        e.preventDefault();
-        this.props.logoutUser();
-    };
+const DashboardPropTypes = t.interface(
+    {
+        auth: authObject,
+    },
+    'DashboardProps'
+);
 
+type DashboardProps = t.TypeOf<typeof DashboardPropTypes>;
+
+@props(DashboardPropTypes)
+class Dashboard extends Component<DashboardProps> {
     render() {
         const { user } = this.props.auth;
 
@@ -19,7 +25,8 @@ class Dashboard extends Component {
                 <div className='row'>
                     <div className='col s12 center-align'>
                         <h4>
-                            <b>Hey there,</b> {user.name.split(' ')[0]}
+                            <b>Hey there</b>
+                            {user ? `, ${user.name.split(' ')[0]}` : ''}
                             <p className='flow-text grey-text text-darken-1'>
                                 You are logged into the{' '}
                                 <span style={{ fontFamily: 'monospace' }}>
@@ -35,16 +42,8 @@ class Dashboard extends Component {
     }
 }
 
-Dashboard.propTypes = {
-    logoutUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state: rootState) => ({
     auth: state.auth,
 });
 
-export default connect(
-    mapStateToProps,
-    { logoutUser }
-)(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

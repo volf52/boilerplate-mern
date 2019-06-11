@@ -3,7 +3,7 @@
         "module": "esnext",
         "target": "esnext",
         "moduleResolution": "node",
-        "allowJs": true,
+        "allowJs": false,
         "allowSyntheticDefaultImports": true,
         "noFallthroughCasesInSwitch": true,
         "noUnusedParameters": true,

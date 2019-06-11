@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { LoginComponentState } from '..';
 import { LoginData } from '../../actions';
 import { loginUser } from '../../actions/authActions';
-import { authObject, authState, errorState, rootState } from '../../reducers';
+import { authObject, rootState } from '../../reducers';
 
 const LoginPropTypes = t.interface(
     {
@@ -18,16 +18,6 @@ const LoginPropTypes = t.interface(
     },
     'LoginProps'
 );
-interface StateProps {
-    auth: authState;
-    errors: errorState;
-}
-interface OwnProps {
-    history: Array<string>;
-}
-interface DispachProps {
-    loginUser: typeof loginUser;
-}
 
 // type LoginProps = StateProps & DispachProps & OwnProps;
 type LoginProps = t.TypeOf<typeof LoginPropTypes>;
@@ -160,16 +150,12 @@ class Login extends Component<LoginProps, LoginComponentState> {
     }
 }
 
-const mapSateToProps = (state: rootState): StateProps => ({
+const mapSateToProps = (state: rootState) => ({
     auth: state.auth,
     errors: state.errors,
 });
 
-const mapDispatchToProps = (): DispachProps => ({
-    loginUser,
-});
-
 export default connect(
     mapSateToProps,
-    mapDispatchToProps
+    { loginUser }
 )(Login);

@@ -6,7 +6,13 @@ import errorReducer from './errorReducer';
 
 export const authObject = t.type({
     isAuthenticated: t.boolean,
-    user: t.object,
+    user: t.union([
+        t.type({
+            id: t.string,
+            name: t.string,
+        }),
+        t.undefined,
+    ]),
     loading: t.boolean,
 });
 export type authState = t.TypeOf<typeof authObject>;

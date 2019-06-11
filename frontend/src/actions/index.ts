@@ -16,9 +16,15 @@ export interface registerAction extends Action<string> {
     payload: {};
 }
 
+export type UserPayload = {
+    id: string;
+    name: string;
+    expiresIn: number;
+};
+
 export interface loginAction extends Action<string> {
     type: ActionTypes.SET_CURRENT_USER;
-    payload: string | undefined;
+    payload: UserPayload | undefined;
 }
 export interface errorAction extends Action<string> {
     type: ActionTypes.GET_ERRORS;

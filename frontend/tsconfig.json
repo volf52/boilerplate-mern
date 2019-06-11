@@ -9,7 +9,7 @@
         "noUnusedParameters": true,
         "noImplicitReturns": false,
         "strict": true,
-        "isolatedModules": false,
+        "isolatedModules": true,
         "noEmit": true,
         "lib": ["dom", "dom.iterable", "esnext"],
         "skipLibCheck": true,
@@ -17,12 +17,9 @@
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
         "jsx": "preserve",
-        "baseUrl": ".",
+        "baseUrl": "src",
         "removeComments": true,
         "typeRoots": ["node_modules/@types"],
-        "paths": {
-            "*": ["node_modules/@types", "./src/types/*"]
-        },
         "experimentalDecorators": true
     },
     "include": ["src/**/*"],

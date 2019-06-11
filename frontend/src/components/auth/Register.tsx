@@ -3,7 +3,7 @@ import * as t from 'io-ts';
 import { props } from 'prop-types-ts';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter, RouteProps } from 'react-router-dom';
+import { Link, RouteProps, withRouter } from 'react-router-dom';
 import { RegisterComponentState } from '..';
 import { registerUser } from '../../actions/authActions';
 import { authObject, authState, errorState, rootState } from '../../reducers';
@@ -21,12 +21,6 @@ const RegisterPropTypes = t.interface(
 interface StateProps {
     auth: authState;
     errors: errorState;
-}
-interface OwnProps {
-    history: Array<string>;
-}
-interface DispachProps {
-    registerUser: typeof registerUser;
 }
 
 type RegisterProps = t.TypeOf<typeof RegisterPropTypes>;
@@ -188,16 +182,7 @@ const mapStateToProps = (state: rootState): StateProps => ({
     errors: state.errors,
 });
 
-const mapDispatchToProps = (): DispachProps => ({
-    registerUser,
-});
-
-// export default withRouter(connect(
-//     mapStateToProps,
-//     mapDispatchToProps
-// )(Register) as React.ComponentType<any>);
-
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    { registerUser }
 )(withRouter(Register as React.ComponentType<any>));

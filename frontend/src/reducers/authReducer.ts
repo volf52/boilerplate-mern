@@ -3,18 +3,21 @@ import { Reducer } from 'redux';
 import { authState } from '.';
 import { ActionTypes, authAction } from '../actions';
 
-const initialState = <authState>{
+const initialState: authState = {
     isAuthenticated: false,
-    user: {},
+    user: undefined,
     loading: false,
 };
-const authReducer: Reducer<authState> = (state = initialState, action) => {
-    switch ((action as authAction).type) {
+const authReducer: Reducer<authState, authAction> = (
+    state = initialState,
+    action
+): authState => {
+    switch (action.type) {
         case ActionTypes.SET_CURRENT_USER:
             return {
-                ...state,
                 isAuthenticated: !isEmpty(action.payload),
                 user: action.payload,
+                ...state,
             };
         default:
             return state;
