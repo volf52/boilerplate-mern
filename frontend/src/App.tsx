@@ -2,47 +2,120 @@ import Dashboard from 'components/app/Dashboard';
 import Login from 'components/auth/Login';
 import Register from 'components/auth/Register';
 import Landing from 'components/layout/Landing';
-import Navbar from 'components/layout/Navbar';
+import NavbarMain from 'components/layout/Navbar';
 import PrivateRoute from 'components/PrivateRoute';
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import store from 'store';
-import { ToastContainer } from 'react-toastify';
+import { Layout, Menu, Icon, Breadcrumb } from 'antd';
 
-// if (localStorage.jwtToken) {
-//     const token = localStorage.jwtToken as string;
-//     setAuthToken(token);
-//     const decoded = jwt_decode<UserPayload>(token);
-//     store.dispatch(setCurrentUser(decoded));
+const { Content, Sider, Header } = Layout;
+const { SubMenu } = Menu;
 
-//     const currentTime = Date.now() / 1000; // ms
-//     if (decoded.expiresIn < currentTime) {
-//         store.dispatch<any>(logoutUser());
-//         window.location.href = './login';
-//     }
-// }
+class App extends Component<any, { collapsed: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            collapsed: false,
+        };
+    }
 
-class App extends Component {
+    toggle = () => {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    };
+
     render() {
         return (
             <Provider store={store}>
                 <BrowserRouter>
-                    <div className='App'>
-                        <ToastContainer />
-                        <Navbar />
-                        <Route exact path='/' component={Landing} />
-                        <Route exact path='/register' component={Register} />
-                        <Route exact path='/login' component={Login} />
-                        <Switch>
-                            <PrivateRoute
-                                exact
-                                path='/dashboard'
-                                component={Dashboard}
-                            />
-                            />
-                        </Switch>
-                    </div>
+                    <Layout>
+                        <NavbarMain />
+                        <Layout>
+                            <Sider
+                                width={200}
+                                style={{ background: '#fff' }}
+                                trigger={null}
+                                collapsible
+                                collapsed={this.state.collapsed}>
+                                <Menu
+                                    mode='inline'
+                                    defaultSelectedKeys={['1']}
+                                    defaultOpenKeys={['sub1']}
+                                    style={{ height: '100%', borderRight: 0 }}>
+                                    <SubMenu
+                                        key='sub1'
+                                        title={
+                                            <span>
+                                                <Icon type='user' />
+                                                subnav 1
+                                            </span>
+                                        }>
+                                        <Menu.Item key='1'>option1</Menu.Item>
+                                        <Menu.Item key='2'>option2</Menu.Item>
+                                        <Menu.Item key='3'>option3</Menu.Item>
+                                        <Menu.Item key='4'>option4</Menu.Item>
+                                    </SubMenu>
+                                    <SubMenu
+                                        key='sub2'
+                                        title={
+                                            <span>
+                                                <Icon type='laptop' />
+                                                subnav 2
+                                            </span>
+                                        }>
+                                        <Menu.Item key='5'>option5</Menu.Item>
+                                        <Menu.Item key='6'>option6</Menu.Item>
+                                        <Menu.Item key='7'>option7</Menu.Item>
+                                        <Menu.Item key='8'>option8</Menu.Item>
+                                    </SubMenu>
+                                    <SubMenu
+                                        key='sub3'
+                                        title={
+                                            <span>
+                                                <Icon type='notification' />
+                                                subnav 3
+                                            </span>
+                                        }>
+                                        <Menu.Item key='9'>option9</Menu.Item>
+                                        <Menu.Item key='10'>option10</Menu.Item>
+                                        <Menu.Item key='11'>option11</Menu.Item>
+                                        <Menu.Item key='12'>option12</Menu.Item>
+                                    </SubMenu>
+                                </Menu>
+                            </Sider>
+                            <Layout style={{ padding: '0 24px 24px' }}>
+                                <Header
+                                    style={{ background: '#fff', padding: 0 }}>
+                                    <Icon
+                                        className='trigger'
+                                        type={
+                                            this.state.collapsed
+                                                ? 'menu-unfold'
+                                                : 'menu-fold'
+                                        }
+                                        onClick={this.toggle}
+                                    />
+                                </Header>
+                                <Breadcrumb style={{ margin: '16px 0' }}>
+                                    <Breadcrumb.Item>Home</Breadcrumb.Item>
+                                    <Breadcrumb.Item>List</Breadcrumb.Item>
+                                    <Breadcrumb.Item>App</Breadcrumb.Item>
+                                </Breadcrumb>
+                                <Content
+                                    style={{
+                                        background: '#fff',
+                                        padding: 24,
+                                        margin: 0,
+                                        minHeight: 280,
+                                    }}>
+                                    Content
+                                </Content>
+                            </Layout>
+                        </Layout>
+                    </Layout>
                 </BrowserRouter>
             </Provider>
         );
