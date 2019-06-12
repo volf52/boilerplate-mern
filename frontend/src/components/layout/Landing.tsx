@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { authObject, rootState } from '../../reducers';
+import { Layout } from 'antd';
 
 const LandingPropTypes = t.interface(
     {
@@ -14,6 +15,8 @@ const LandingPropTypes = t.interface(
 );
 
 type LandingProps = t.TypeOf<typeof LandingPropTypes>;
+
+const { Content } = Layout;
 
 @props(LandingPropTypes)
 class Landing extends Component<LandingProps> {

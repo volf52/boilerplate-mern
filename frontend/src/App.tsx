@@ -10,7 +10,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import store from 'store';
 import { Layout, Menu, Icon, Breadcrumb } from 'antd';
 
-const { Content, Sider, Header } = Layout;
+const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
 class App extends Component<any, { collapsed: boolean }> {
@@ -92,8 +92,7 @@ class App extends Component<any, { collapsed: boolean }> {
                                 </Menu>
                             </Sider>
                             <Layout style={{ padding: '0 24px 24px' }}>
-                                <Header
-                                    style={{ background: '#fff', padding: 0 }}>
+                                <Breadcrumb style={{ margin: '16px 0' }}>
                                     <Icon
                                         className='trigger'
                                         type={
@@ -103,8 +102,7 @@ class App extends Component<any, { collapsed: boolean }> {
                                         }
                                         onClick={this.toggle}
                                     />
-                                </Header>
-                                <Breadcrumb style={{ margin: '16px 0' }}>
+                                    <span>{'  '}</span>
                                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                                     <Breadcrumb.Item>List</Breadcrumb.Item>
                                     <Breadcrumb.Item>App</Breadcrumb.Item>
@@ -116,7 +114,25 @@ class App extends Component<any, { collapsed: boolean }> {
                                         margin: 0,
                                         minHeight: 280,
                                     }}>
-                                    Content
+                                    <Route exact path='/' component={Landing} />
+                                    <Route
+                                        exact
+                                        path='/register'
+                                        component={Register}
+                                    />
+                                    <Route
+                                        exact
+                                        path='/login'
+                                        component={Login}
+                                    />
+                                    <Switch>
+                                        <PrivateRoute
+                                            exact
+                                            path='/dashboard'
+                                            component={Dashboard}
+                                        />
+                                        />
+                                    </Switch>
                                 </Content>
                             </Layout>
                         </Layout>
