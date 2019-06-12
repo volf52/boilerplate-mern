@@ -17,7 +17,7 @@ class App extends Component<any, { collapsed: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = {
-            collapsed: false,
+            collapsed: true,
         };
     }
 
