@@ -1,27 +1,42 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "outDir": "build/dist",
         "module": "esnext",
-        "moduleResolution": "node",
-        "allowJs": true,
-        "allowSyntheticDefaultImports": true,
-        "noFallthroughCasesInSwitch": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": false,
-        "strict": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "target": "esnext",
+        "lib": ["esnext", "dom", "dom.iterable"],
+        "sourceMap": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
+        "allowJs": true,
+        "noEmit": true,
+        "isolatedModules": true,
         "resolveJsonModule": true,
         "jsx": "preserve",
-        "baseUrl": "src",
-        "removeComments": true,
-        "typeRoots": ["node_modules/@types"],
-        "experimentalDecorators": true
+        "moduleResolution": "node",
+        "rootDir": "src",
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "experimentalDecorators": true,
+        "strict": true
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "public"]
+    "include": ["src"],
+    "exclude": [
+        "node_modules",
+        "build",
+        "scripts",
+        "acceptance-test",
+        "webpack",
+        "jest",
+        "src/setupTests.ts"
+    ],
+    "types": ["typePatches"],
+    "references": [
+        {
+            "path": "../shared_utils"
+        }
+    ]
 }

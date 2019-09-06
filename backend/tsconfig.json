@@ -7,7 +7,7 @@
         "allowSyntheticDefaultImports": true,
         "noFallthroughCasesInSwitch": true,
         "noUnusedParameters": true,
-        "noImplicitReturns": false,
+        "noImplicitReturns": true,
         "declaration": true,
         "declarationDir": "build/types",
         "strict": true,
@@ -16,7 +16,9 @@
         "outDir": "build",
         "rootDir": "./",
         "sourceMap": true,
+        "noEmit": true,
         "baseUrl": ".",
+        "noUnusedLocals": true,
         "removeComments": true,
         "typeRoots": ["node_modules/@types"],
         "paths": {
@@ -24,5 +26,10 @@
         }
     },
     "include": ["server/**/*"],
-    "exclude": ["node_modules", "build"]
+    "exclude": ["node_modules", "build"],
+    "references": [
+        {
+            "path": "../shared_utils"
+        }
+    ]
 }

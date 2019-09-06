@@ -1,25 +1,17 @@
-const fs = require('fs');
 const path = require('path');
-const webpack = require('webpack');
-const NodemonPlugin = require('nodemon-webpack-plugin');
-const DotEnv = require('dotenv-webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const DotEnv = require('dotenv-webpack');
+var nodeExternals = require('webpack-node-externals');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const nodeModules = {};
 const dotenvConfig = { systemvars: true };
 if (process.env.NODE_ENV !== 'production') {
     dotenvConfig.path = path.join(__dirname, '.env');
 }
-fs.readdirSync('node_modules')
-    .filter(function(x) {
-        return ['.bin'].indexOf(x) === -1;
-    })
-    .forEach(function(mod) {
-        nodeModules[mod] = 'commonjs ' + mod;
-    });
 
 module.exports = {
-    entry: './server/server.ts',
+    mode: 'production',
+    entry: ['babel-polyfill', path.join(__dirname, 'server', 'server.ts')],
     output: {
         path: path.join(__dirname, '/build'),
         filename: 'server.js',
@@ -38,22 +30,18 @@ module.exports = {
         ],
     },
     target: 'node',
-    externals: nodeModules,
-    plugins: [new DotEnv(dotenvConfig), new NodemonPlugin()],
+    externals: [nodeExternals()],
+    plugins: [new DotEnv(dotenvConfig), new CleanWebpackPlugin()],
     optimization: {
         minimizer: [
-            // we specify a custom UglifyJsPlugin here to get source maps in production
             new UglifyJsPlugin({
                 cache: true,
                 parallel: true,
-                uglifyOptions: {
-                    compress: false,
-                    ecma: 6,
-                    mangle: true,
-                },
                 sourceMap: true,
             }),
         ],
+        splitChunks: {
+            chunks: 'all',
+        },
     },
-    mode: 'none',
 };
